@@ -28,3 +28,7 @@ hs_err_pid*
 # Builds
 target/
 out/
+
+# Libraries
+libs/
+src/main/java/com/kingrainbow44/

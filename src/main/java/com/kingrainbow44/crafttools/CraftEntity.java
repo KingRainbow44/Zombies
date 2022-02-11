@@ -8,8 +8,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.craftbukkit.v1_18_R1.entity.CraftLivingEntity;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -144,13 +142,11 @@ public class CraftEntity {
         // noinspection ConstantConditions
         return entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
     }
-
-    @NotNull
+    
     public final CraftLivingEntity getHandle() {
         return ((CraftLivingEntity) entity);
     }
 
-    @Nullable
     public final NPC getCitizensEntity() {
         return citizensEntity;
     }

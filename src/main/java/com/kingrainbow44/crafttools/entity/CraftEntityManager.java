@@ -34,6 +34,10 @@ public final class CraftEntityManager {
             craftEntity.remove(((LivingEntity) entity).getUniqueId());
         } else throw new NullPointerException("Entity cannot be unregistered because it is not registered.");
     }
+    
+    public <T> T getEntity(Object object, Class<T> clazz) {
+        return clazz.cast(getEntity(object));
+    }
 
     public CraftEntity getEntity(Object entity) {
         if(entity instanceof UUID) {

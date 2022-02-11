@@ -1,9 +1,12 @@
 package games.nightraid.zombies;
 
+import com.kingrainbow44.crafttools.entity.CraftEntityManager;
 import com.kingrainbow44.crafttools.player.CraftPlayerManager;
 import com.kingrainbow44.crafttools.plugin.ExtendedPlugin;
+import games.nightraid.zombies.entity.ZombieEntityTrait;
 import games.nightraid.zombies.player.ZombiesPlayer;
 import games.nightraid.zombies.player.ZombiesPlayerData;
+import org.ipvp.canvas.MenuFunctionListener;
 
 public final class Zombies extends ExtendedPlugin {
     private static Zombies instance;
@@ -18,16 +21,20 @@ public final class Zombies extends ExtendedPlugin {
 
         CraftPlayerManager.setPlayerClass(ZombiesPlayer.class);
         CraftPlayerManager.setDataClass(ZombiesPlayerData.class);
+        CraftEntityManager.traitClass = ZombieEntityTrait.class;
     }
 
     @Override
     protected void enable() {
+        // External listeners.
+        registerListener(new MenuFunctionListener());
+        
         this.getLogger().info("Enabled Zombies by Nightraid.");
     }
 
     @Override
     protected String getCommandPath() {
-        return "games.nightraid.zombies.commands";
+        return null; /* "games.nightraid.zombies.commands" */
     }
 
     @Override

@@ -1,8 +1,10 @@
 package com.kingrainbow44.crafttools.player;
 
+import com.kingrainbow44.crafttools.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -21,6 +23,10 @@ public final class CraftPlayerManager {
 
     public static void setDataClass(Class<? extends CraftPlayerData> dataClass) {
         CraftPlayerManager.dataClass = dataClass;
+    }
+    
+    public Collection<ICraftPlayer> getPlayers() {
+        return craftPlayer.values();
     }
 
     public void registerPlayer(Player player) {

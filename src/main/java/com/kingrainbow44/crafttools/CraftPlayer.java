@@ -68,4 +68,7 @@ public class CraftPlayer implements ICraftPlayer {
         if(this.playerData != null) return;
         this.playerData = playerData;
     }
+    
+    @Override
+    public void tick() { }
 }

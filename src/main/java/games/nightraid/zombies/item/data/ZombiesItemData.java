@@ -1,4 +1,4 @@
-package games.nightraid.zombies.item;
+package games.nightraid.zombies.item.data;
 
 import com.google.gson.Gson;
 import lombok.Setter;

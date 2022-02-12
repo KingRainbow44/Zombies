@@ -35,21 +35,23 @@ public class CraftEntity {
         if(getPlugin() == null)
             throw new IllegalStateException("Unable to locate a valid CraftTools installation.");
 
-        if(CraftEntityManager.self().getCitizensUsage()) {
-            citizensEntity = CitizensAPI.getNPCRegistry().createNPC(entity.getType(), entity.getCustomName());
-            this.entity = (LivingEntity) citizensEntity.getEntity();
-
-            if(CraftEntityManager.traitClass != null)
-                citizensEntity.addTrait(CraftEntityManager.traitClass);
-        } else {
-            this.entity = entity;
-            citizensEntity = null;
-        }
-
         try {
             friendlyName = EntityName.valueOf(entity.getType().name()).getName();
         } catch (IllegalArgumentException ignored) {
             friendlyName = entity.getName();
+        }
+        
+        if(CraftEntityManager.self().getCitizensUsage()) {
+            citizensEntity = CitizensAPI.getNPCRegistry().createNPC(entity.getType(),
+                    entity.getCustomName() == null ? friendlyName : entity.getCustomName()
+            ); this.entity = (LivingEntity) citizensEntity.getEntity();
+
+            if(CraftEntityManager.traitClass != null)
+                citizensEntity.addTrait(CraftEntityManager.traitClass);
+            entity.remove(); // Remove the original entity.
+        } else {
+            this.entity = entity;
+            citizensEntity = null;
         }
 
         entityHealth = entity.getHealth();
@@ -73,6 +75,7 @@ public class CraftEntity {
     public void tick() {
         if(entity.isDead()) {
             CraftEntityManager.self().deregisterEntity(this);
+            return;
         }
 
         entityHealth = entity.getHealth();

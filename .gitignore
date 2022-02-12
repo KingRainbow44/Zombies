@@ -32,3 +32,6 @@ out/
 # Libraries
 libs/
 src/main/java/com/kingrainbow44/
+
+# Testing
+src/test/environment/

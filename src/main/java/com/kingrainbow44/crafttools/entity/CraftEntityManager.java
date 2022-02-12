@@ -12,14 +12,14 @@ import java.util.UUID;
 public final class CraftEntityManager {
 
     private final static CraftEntityManager instance = new CraftEntityManager();
-    private final Map<UUID, CraftEntity> craftEntity = new HashMap<>();
+    private final Map<UUID, CraftEntity> craftEntities = new HashMap<>();
 
     public static Class<? extends CraftEntityTrait> traitClass = null;
 
     private boolean useCitizens = false;
 
     public void registerEntity(CraftEntity entity) {
-        craftEntity.put(
+        craftEntities.put(
                 entity.getHandle().getUniqueId(),
                 entity
         );
@@ -27,11 +27,11 @@ public final class CraftEntityManager {
 
     public void deregisterEntity(Object entity) {
         if(entity instanceof UUID) {
-            craftEntity.remove(entity);
+            craftEntities.remove(entity);
         } else if (entity instanceof CraftEntity) {
-            craftEntity.remove(((CraftEntity) entity).getHandle().getUniqueId());
+            craftEntities.remove(((CraftEntity) entity).getHandle().getUniqueId());
         } else if (entity instanceof LivingEntity) {
-            craftEntity.remove(((LivingEntity) entity).getUniqueId());
+            craftEntities.remove(((LivingEntity) entity).getUniqueId());
         } else throw new NullPointerException("Entity cannot be unregistered because it is not registered.");
     }
     
@@ -41,11 +41,11 @@ public final class CraftEntityManager {
 
     public CraftEntity getEntity(Object entity) {
         if(entity instanceof UUID) {
-            return craftEntity.get(entity);
+            return craftEntities.get(entity);
         } else if (entity instanceof CraftEntity) {
-            return craftEntity.get(((CraftEntity) entity).getHandle().getUniqueId());
+            return craftEntities.get(((CraftEntity) entity).getHandle().getUniqueId());
         } else if (entity instanceof LivingEntity) {
-            return craftEntity.get(((LivingEntity) entity).getUniqueId());
+            return craftEntities.get(((LivingEntity) entity).getUniqueId());
         } else throw new NullPointerException("Entity cannot be retrieved because it is not registered.");
     }
 
@@ -54,15 +54,16 @@ public final class CraftEntityManager {
     }
 
     public boolean getCitizensUsage() {
-        if(CraftUtils.getPlugin() != null)
-            if(CraftUtils.getPlugin().getServer().getPluginManager().isPluginEnabled("Citizens"))
-                throw new RuntimeException("Unable to attach to Citizens while 'useCitizens' is enabled.");
+        if(
+                CraftUtils.getPlugin() != null &&
+                !CraftUtils.getPlugin().getServer().getPluginManager().isPluginEnabled("Citizens")
+        ) throw new NullPointerException("Citizens is not installed.");
 
         return useCitizens;
     }
 
     public Collection<CraftEntity> getEntities() {
-        return craftEntity.values();
+        return craftEntities.values();
     }
 
     public static CraftEntityManager self() {

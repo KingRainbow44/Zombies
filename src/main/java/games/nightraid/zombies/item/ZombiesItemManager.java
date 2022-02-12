@@ -1,5 +1,6 @@
 package games.nightraid.zombies.item;
 
+import games.nightraid.zombies.item.types.Pistol;
 import games.nightraid.zombies.item.types.TestGun;
 
 import java.util.HashMap;
@@ -10,6 +11,7 @@ public final class ZombiesItemManager {
     
     public static void initialize() {
         registerItem(new TestGun());
+        registerItem(new Pistol());
     }
     
     public static ZombiesItem getItem(String itemId) {
@@ -17,6 +19,6 @@ public final class ZombiesItemManager {
     }
     
     private static void registerItem(ZombiesItem item) {
-        items.put(item.getBaseData().itemName, item);
+        items.put(item.getBaseData().itemId, item);
     }
 }

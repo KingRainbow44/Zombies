@@ -1,7 +1,7 @@
 package games.nightraid.zombies.item.types;
 
 import games.nightraid.zombies.item.ZombiesItem;
-import games.nightraid.zombies.item.ZombiesBaseItemData;
+import games.nightraid.zombies.item.data.ZombiesBaseItemData;
 import games.nightraid.zombies.item.ZombiesItemType;
 import games.nightraid.zombies.utils.ItemUtil;
 import org.bukkit.Material;
@@ -12,7 +12,8 @@ public final class TestGun extends ZombiesItem {
         super(new ZombiesBaseItemData(
                 "test", "Test Gun", 
                 "Shoots literally nothing.", Material.SPYGLASS,
-                ZombiesItemType.GUN, 1000, 4, 30
+                ZombiesItemType.GUN, 1000, 1000, 4,
+                60, 30, 30
         ));
     }
 

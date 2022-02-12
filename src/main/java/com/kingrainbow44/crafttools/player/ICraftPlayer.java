@@ -14,4 +14,6 @@ public interface ICraftPlayer {
     void onRegister(Player player);
 
     void onUnregister(Player player);
+    
+    void tick();
 }

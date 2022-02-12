@@ -1,13 +1,13 @@
 package games.nightraid.zombies.item;
 
-import com.kingrainbow44.crafttools.entity.CraftEntityManager;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import games.nightraid.zombies.entity.ZombieEntity;
+import games.nightraid.zombies.item.data.ZombiesBaseItemData;
+import games.nightraid.zombies.item.data.ZombiesItemData;
+import games.nightraid.zombies.player.ZombiesPlayer;
 import games.nightraid.zombies.utils.GunUtil;
 import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -23,17 +23,32 @@ public abstract class ZombiesItem {
     /**
      * Called when the player right-clicks with a gun-type weapon.
      * @param player The player who is running it.
+     * @param item The weapon they are using.
      *               
      * This is a generic method and can be overridden.
      */
-    public void execute(ItemStack item, Player player) {
-        GunUtil.shoot(this.baseData.distance, player, Particle.CRIT, entities -> {
+    public void execute(ItemStack item, ZombiesPlayer player) {
+        if(!GunUtil.canShoot(item))
+            return;
+        GunUtil.shootBeam(this.baseData.distance, player.getBukkitPlayer(), Particle.CRIT, entities -> {
             for(final LivingEntity entity : entities) {
-                final ZombieEntity zombie =
-                        CraftEntityManager.self().getEntity(entity, ZombieEntity.class);
-                zombie.getHandle().damage(getDamage(item));
+                if(entity.isDead())
+                    continue;
+                entity.damage(getDamage(item), player.getBukkitPlayer());
             }
-        });
+        }); GunUtil.shootLogic(item);
+    }
+
+    /**
+     * Called when the player left-clicks with a gun-type weapon.
+     * @param item The weapon they are using.
+     *             
+     * This is a generic method and can be overridden.
+     */
+    public void reload(ItemStack item) {
+        if(!GunUtil.canReload(item))
+            return;
+        GunUtil.reloadLogic(item);
     }
 
     /**
@@ -41,6 +56,38 @@ public abstract class ZombiesItem {
      * @return The damage to do.
      */
     protected abstract int getDamage(ItemStack item);
+
+    /**
+     * Get the maximum ammo based on the refinement rank.
+     * @return The maximum ammo for the weapon.
+     */
+    public int getMaxAmmo(ItemStack item) {
+        return this.baseData.maxAmmo;
+    }
+
+    /**
+     * Get the ammo stored in one load based on the refinement rank.
+     * @return The ammo for one load.
+     */
+    public int getMaxClipAmmo(ItemStack item) {
+        return this.baseData.maxClipAmmo;
+    }
+
+    /**
+     * Get the rate at which the gun will fire based on the refinement rank.
+     * @return The time in ticks between shots.
+     */
+    public int getFireRate(ItemStack item) {
+        return this.baseData.fireRate;
+    }
+
+    /**
+     * Get the time it takes to reload based on the refinement rank.
+     * @return The time in ticks to reload.
+     */
+    public int getReloadTime(ItemStack item) {
+        return this.baseData.reloadTime;
+    }
     
     public final ZombiesBaseItemData getBaseData() {
         return baseData;
@@ -62,6 +109,7 @@ public abstract class ZombiesItem {
         
         // Append mutable data.
         dataTag.setInteger("currentAmmo", this.baseData.maxAmmo);
+        dataTag.setInteger("currentClip", this.baseData.maxClipAmmo);
         dataTag.setString("data", ZombiesItemData.empty().toString());
         
         // Modify item meta.

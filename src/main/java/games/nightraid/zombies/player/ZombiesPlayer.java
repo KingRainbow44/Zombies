@@ -2,9 +2,10 @@ package games.nightraid.zombies.player;
 
 import com.kingrainbow44.crafttools.CraftPlayer;
 import com.kingrainbow44.crafttools.player.CraftPlayerManager;
-import games.nightraid.zombies.item.ZombiesItemManager;
+import games.nightraid.zombies.game.ZombiesGameInstance;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ public final class ZombiesPlayer extends CraftPlayer {
     
     private final Map<ZombiesPlayerFlags, Boolean> flags = new HashMap<>();
     private final Map<String, Integer> gunCooldown = new HashMap<>();
+    @Nullable private ZombiesGameInstance inGame;
     
     /*
      * Overridden Methods
@@ -59,15 +61,24 @@ public final class ZombiesPlayer extends CraftPlayer {
     }
     
     /*
+     * Data Methods
+     */
+    
+    @Nullable
+    public ZombiesGameInstance getGame() {
+        return this.inGame;
+    }
+    
+    public void setGame(@Nullable ZombiesGameInstance game) {
+        this.inGame = game;
+    }
+    
+    /*
      * DEBUG
      */
 
     @Override
     public void onRegister(Player player) {
-        player.getInventory().addItem(
-                ZombiesItemManager.getItem("test").build()
-        ); this.sendMessage("&aTest weapon given.");
-        
         this.setFlag(ZombiesPlayerFlags.IN_GAME, true);
     }
 }

@@ -25,28 +25,26 @@ public final class GunUtil {
     public static boolean canReload(ItemStack itemStack) {
         ItemWriter itemWriter = new ItemWriter(itemStack);
         return itemWriter.getMutableItemData().getAmmoReserve() > 0 && 
-            itemWriter.getMutableItemData().getClipAmmo() < itemWriter.getBaseItemData().maxClipAmmo;
+            itemWriter.getMutableItemData().getClipAmmo() < itemWriter.getItem().getMaxClipAmmo(itemStack);
     }
     
     public static void shootLogic(ItemStack itemStack) {
-        if(!canShoot(itemStack)) return;
-        
         ItemWriter itemWriter = new ItemWriter(itemStack);
         itemWriter.getMutableItemData().modifyClipAmmo(-1);
+        itemWriter.write();
     }
     
     public static void reloadLogic(ItemStack itemStack) {
-        if(!canReload(itemStack)) return;
-        
         ItemWriter itemWriter = new ItemWriter(itemStack);
         ZombiesItemMutableData mutableItemData = itemWriter.getMutableItemData();
         int reloadAmount = Math.min(
-                itemWriter.getBaseItemData().maxClipAmmo - mutableItemData.getClipAmmo(),
-                itemWriter.getBaseItemData().maxClipAmmo
+                itemWriter.getItem().getMaxAmmo(itemStack) - mutableItemData.getClipAmmo(),
+                itemWriter.getItem().getMaxAmmo(itemStack)
         );
         
         mutableItemData.modifyClipAmmo(reloadAmount);
         mutableItemData.modifyAmmoReserve(-reloadAmount);
+        itemWriter.write();
     }
     
     public static void shootBeam(int distance, Player player, Particle particle, Consumer<List<LivingEntity>> callback) {

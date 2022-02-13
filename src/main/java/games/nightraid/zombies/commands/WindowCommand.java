@@ -4,7 +4,6 @@ import games.nightraid.zombies.utils.GenericCommand;
 import games.nightraid.zombies.utils.absolute.Menus;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.ipvp.canvas.type.AbstractMenu;
 
 import java.util.Collections;
 
@@ -26,14 +25,22 @@ public final class WindowCommand extends GenericCommand {
             player.sendMessage(colorize("&cUsage: &7" + getUsage()));
             return;
         }
-        
+
         switch(args[0].toLowerCase()) {
             default:
                 player.sendMessage(colorize("&cUnknown window: &7" + args[0]));
                 break;
             case "debug":
-                AbstractMenu menu = Menus.debugMenu();
-                menu.open(player);
+                Menus.debugMenu()
+                        .open(player);
+                break;
+            case "items":
+                Menus.itemMenu()
+                        .open(player);
+                break;
+            case "game":
+                Menus.gameMenu()
+                        .open(player);
                 break;
         }
     }

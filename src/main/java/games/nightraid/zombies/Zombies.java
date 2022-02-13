@@ -15,11 +15,21 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.ipvp.canvas.MenuFunctionListener;
 
+import java.io.File;
+
 public final class Zombies extends ExtendedPlugin {
     private static Zombies instance;
 
     public static Zombies getInstance() {
         return instance;
+    }
+    
+    /*
+     * Utils.
+     */
+    
+    public File getPathTo(String pathTo) {
+        return new File(getDataFolder(), pathTo);
     }
     
     @Override

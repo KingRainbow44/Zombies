@@ -37,6 +37,7 @@ public abstract class ZombiesItem {
                 entity.damage(getDamage(item), player.getBukkitPlayer());
             }
         }); GunUtil.shootLogic(item);
+        player.startGunCooldown(this.baseData.itemId, this.getFireRate(item));
     }
 
     /**
@@ -120,5 +121,9 @@ public abstract class ZombiesItem {
 
         // Set item meta & return.
         item.setItemMeta(itemMeta); return item;
+    }
+    
+    protected final int valueFromRefinementRank(int refinementRank, int... values) {
+        return values[refinementRank];
     }
 }

@@ -2,6 +2,8 @@ package games.nightraid.zombies.game;
 
 import games.nightraid.zombies.player.ZombiesPlayer;
 import games.nightraid.zombies.player.ZombiesPlayerFlags;
+import games.nightraid.zombies.utils.config.MapConfiguration;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -37,12 +39,23 @@ public final class ZombiesGameInstance {
         if(this.hasStarted)
             return;
         this.hasStarted = true;
+
+        // Get the map configuration.
+        MapConfiguration mapConfig = this.flags.mapConfig;
+        // Get the spawn position.
+        Location location = mapConfig.positions.teamSpawn.deserialize();
         
-        // Set players to playing.
         this.getPlayers().forEach(player -> {
             ZombiesPlayer zombiesPlayer = ZombiesPlayer.get(player);
+            
+            // Reset player.
+            zombiesPlayer.reset();
+            // Set player to playing.
             zombiesPlayer.setFlag(ZombiesPlayerFlags.IN_GAME, true);
             zombiesPlayer.setGame(this);
+            
+            // Teleport player.
+            player.teleport(location);
         });
     }
     

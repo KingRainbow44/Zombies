@@ -20,6 +20,7 @@ public final class MapConfiguration {
     }
     
     public static class Positions {
+        public Position teamSpawn;
         public Position ultimateMachine;
         public Position teamMachine;
         public List<Position> luckyChests;

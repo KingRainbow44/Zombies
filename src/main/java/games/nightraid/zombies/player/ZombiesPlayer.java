@@ -74,11 +74,10 @@ public final class ZombiesPlayer extends CraftPlayer {
     }
     
     /*
-     * DEBUG
+     * Utility methods.
      */
-
-    @Override
-    public void onRegister(Player player) {
-        this.setFlag(ZombiesPlayerFlags.IN_GAME, true);
+    
+    public void reset() {
+        
     }
 }

@@ -6,7 +6,7 @@ public final class Position {
     public float x, y, z;
     public float pitch, yaw;
     
-    public Location deserialize(Position position) {
-        return new Location(null, position.x, position.y, position.z, position.yaw, position.pitch);
+    public Location deserialize() {
+        return new Location(null, this.x, this.y, this.z, this.yaw, this.pitch);
     }
 }
